@@ -1,0 +1,2 @@
+module DescriptionBoxesHelper
+end
