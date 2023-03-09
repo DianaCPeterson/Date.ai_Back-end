@@ -1,15 +1,20 @@
 class ProfilesController < ApplicationController
-  skip_before_action :authorize, only: [:index, :create]
+  skip_before_action :authorize, only: [:index, :create, :show, :update, :destroy]
   
   def index
     render json: Profile.all
   end
 
-    def destroy
-    profile = Profile.find(params[:id])
-    profile.destroy
-    header :no_content
-    end
+  def show
+    profile= Profile.find_by(id: params[:id])
+    render json: profile
+  end
+
+  def destroy
+      profile = Profile.find_by(id: params[:id])
+      profile.destroy
+      head :no_content
+  end
 
     def create
     profile = Profile.create!(profile_params)
@@ -17,14 +22,14 @@ class ProfilesController < ApplicationController
     end
     
     def update
-    profile = Profile.find(params[:id])
-    profile.update!(profile_params)
-    render json: profile
+      profile = Profile.find_by(id: params[:id])
+      profile.update(profile_params)
+      render json: profile
     end
 
     private
     
     def profile_params 
-    params.permit(:image, :caption, :name, :matches_id, :description_id)
+    params.permit(:image, :caption, :name)
     end
 end
